@@ -38,17 +38,10 @@ typedef struct {
 	int allimps;				// "allimps"
 	char** cur;         // "cur"
 	int ncur;
-<<<<<<< HEAD
 	char** bcat;				// "bcat"
 	int nbcat;
 	char** badv;				// "badv"
 	int nbadv;
-=======
-	//char** bcat;				// "bcat"
-	//int nbcat;
-	//char** badv;				// "badv"
-	//int nbadv;
->>>>>>> 909c302952839584b334bc4297ab33dcdcabec1f
 	Impressions impressions;
 }BidRequest;
 

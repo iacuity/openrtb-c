@@ -23,23 +23,14 @@ int json_copy_string(char **dst, struct json_object* obj) {
 	len = json_object_get_string_len(obj);
 	
 	if (len > 0) {
-<<<<<<< HEAD
 		*dst = (char*) malloc(sizeof(char) * (len + 1));
-=======
-		len += 1; 
-		*dst = (char*) malloc(sizeof(char) * len);
->>>>>>> 909c302952839584b334bc4297ab33dcdcabec1f
 		if (NULL == *dst) {
 			ORTB_ERROR("NO MEMORY AVAILABLE");
 			return NO_MEMORY;
 		}
 	
 		strncpy(*dst, json_object_get_string(obj), len);
-<<<<<<< HEAD
 		(*dst)[len] = 0;
-=======
-		*dst[len] = 0;
->>>>>>> 909c302952839584b334bc4297ab33dcdcabec1f
 	}
 
 	return COPY_SUCCESS;
@@ -136,11 +127,7 @@ int parseBidRequest(json_object* root, BidRequest *bidRequest) {
 				bidRequest->tmax = json_object_get_int(val);
 				break;
 			}
-<<<<<<< HEAD
-		
-=======
 			
->>>>>>> 909c302952839584b334bc4297ab33dcdcabec1f
 			if (!strcmp(ORTB_WSEAT, key)) {
 				if(COPY_SUCCESS != json_copy_string_array(&bidRequest->wseat, &bidRequest->nwseat, val)) {
 					ORTB_ERROR("Failed to copy: %s", ORTB_WSEAT);
@@ -161,11 +148,7 @@ int parseBidRequest(json_object* root, BidRequest *bidRequest) {
 				}
 				break;
 			}
-<<<<<<< HEAD
 			
-=======
-		/*	
->>>>>>> 909c302952839584b334bc4297ab33dcdcabec1f
 			if (!strcmp(ORTB_BCAT, key)) {
 				if(COPY_SUCCESS != json_copy_string_array(&bidRequest->bcat, &bidRequest->nbcat, val)) {
 					ORTB_ERROR("Failed to copy: %s", ORTB_BCAT);
@@ -181,11 +164,7 @@ int parseBidRequest(json_object* root, BidRequest *bidRequest) {
 				}
 				break;
 			}
-<<<<<<< HEAD
 			
-=======
-			*/
->>>>>>> 909c302952839584b334bc4297ab33dcdcabec1f
 			ORTB_ERROR("Invalid key in BidRequest: key: %s", key);
 		}while(0);
 	}
