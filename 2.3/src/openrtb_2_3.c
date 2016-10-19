@@ -3,7 +3,7 @@
 #include <string.h>
 #include <json.h>
 #include "openrtb_2_3.h"
-
+ 
 #define ORTB_LOG(format, ...); fprintf(stderr, "ORTB_LOG|%s:%d|"format \
 		"\n", __FILE__, __LINE__, ##__VA_ARGS__);
 
@@ -15,6 +15,23 @@
 		ORTB_ERROR(format, ##__VA_ARGS__); \
 		break; \
 	}
+
+#define FREE_AND_RESET(obj) \
+	if (NULL != obj) { \
+		free(obj); \
+		obj = NULL; \
+	}
+
+#define FREE_AND_RESET_LIST(nitem, item) \
+	if (nitem > 0) { \
+		for(;nitem > 0; nitem--) { \
+			free(item[nitem-1]); \
+			item[nitem-1] = NULL; \
+		} \
+		free(item); \
+		item == NULL; \
+	}
+
 
 int json_copy_string(char **dst, struct json_object* obj) {
 	int len = 0;
@@ -71,10 +88,12 @@ void freeBidRequest(BidRequest *bidRequest) {
 		if (NULL == bidRequest)
 			break;
 
-		if (NULL != bidRequest->id)
-			free(bidRequest->id);
+		FREE_AND_RESET(bidRequest->id);
+		FREE_AND_RESET_LIST(bidRequest->nwseat, bidRequest->wseat);	
+		FREE_AND_RESET_LIST(bidRequest->ncur, bidRequest->cur);	
 
-
+		FREE_AND_RESET_LIST(bidRequest->nbcat, bidRequest->bcat);	
+		FREE_AND_RESET_LIST(bidRequest->nbadv, bidRequest->badv);	
 	}while(0);
 	
 	return;

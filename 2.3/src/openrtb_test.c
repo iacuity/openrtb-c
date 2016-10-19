@@ -11,9 +11,7 @@
 	\"cur\": [\"USD\", \"INR\"], \
 	\"bcat\": [\"bcat-1\", \"bcat-2\"], \
 	\"badv\": [\"badv-1\", \"badv-2\"], \
-	\"allimps\": 1, \
-	\"cur\": [\"USD\", \"INR\"] \
-	}" \
+	}" 
 
 int validateBidRequest(BidRequest *bidRequest) {
 	assert(!strcmp("80ce30c53c16e6ede735f123ef6e32361bfc7b22", bidRequest->id));
