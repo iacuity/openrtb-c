@@ -177,6 +177,11 @@ typedef struct {
 }Segment;
 
 typedef struct {
+	Segment *segment;
+	int nsegment;
+}Segments;
+
+typedef struct {
 	char* id;								// "id"
 	char* name;							// "name"
 	Segments* segment;			// "segment"
@@ -186,17 +191,6 @@ typedef struct {
 	Data *data;
 	int ndata;
 }Datas;
-
-typedef struct {
-	char* id;								// "id"
-	char* buyerid;					// "buyerid"
-	int yob;								// "yob"
-	char* gender;						// "gender"
-	char* keywords;					// "keywords"
-	char* customdata;				// "customdata"
-	Geo *geo;								// "geo"
-	Datas* data;						// "data"
-}User;
 
 typedef struct {
 	float lat;							// "lat"
@@ -212,8 +206,19 @@ typedef struct {
 }Geo;
 
 typedef struct {
-	char* ua;								// "ua"
+	char* id;								// "id"
+	char* buyerid;					// "buyerid"
+	int yob;								// "yob"
+	char* gender;						// "gender"
+	char* keywords;					// "keywords"
+	char* customdata;				// "customdata"
 	Geo *geo;								// "geo"
+	Datas* data;						// "data"
+}User;
+
+typedef struct {
+	char* ua;								// "ua"
+	//Geo *geo;								// "geo"
 	int dnt;								// "dnt"
 	int lmt;								// "lmt"
 	char* ip;								// "ip"
@@ -242,30 +247,6 @@ typedef struct {
 	char* macmd5;						// "macmd5"
 }Device;
 
-typedef struct {
-	char* id;								// "id"
-	char* name;							// "name"
-	char* bundle;						// "bundle"
-	char* domain;						// "domain"
-	char* storeurl;					// "storeurl"
-	char** cat;							// "cat"
-	char** sectioncat;			// "sectioncat"
-	char** pagecat;					// "pagecat"
-	char* ver;							// "ver"
-	int privacypolicy;			// "privacypolicy"
-	int paid;								// "paid"
-	Publisher* publisher;		// "publisher"
-	Content* content;				// "content"
-	char* keywords;					// "keywords"
-}App;
-
-typedef struct {
-	char* id;								// "id"
-	char* name;							// "name"
-	char** cat;							// "cat"
-	char* domain;						// "domain"
-}Producer;
-
 typedef struct{
 	char* id;								// "id"
 	int episode;						// "episode"
@@ -293,6 +274,30 @@ typedef struct {
 	char** cat;							// "cat"
 	char* domain;						// "domain"
 }Publisher;
+
+typedef struct {
+	char* id;								// "id"
+	char* name;							// "name"
+	char** cat;							// "cat"
+	char* domain;						// "domain"
+}Producer;
+
+typedef struct {
+	char* id;								// "id"
+	char* name;							// "name"
+	char* bundle;						// "bundle"
+	char* domain;						// "domain"
+	char* storeurl;					// "storeurl"
+	char** cat;							// "cat"
+	char** sectioncat;			// "sectioncat"
+	char** pagecat;					// "pagecat"
+	char* ver;							// "ver"
+	int privacypolicy;			// "privacypolicy"
+	int paid;								// "paid"
+	Publisher* publisher;		// "publisher"
+	Content* content;				// "content"
+	char* keywords;					// "keywords"
+}App;
 
 typedef struct {
 	char* id;								// "id"
@@ -339,6 +344,23 @@ typedef struct {
 }Native;
 
 typedef struct {
+	int w;									// "w"
+	int h;									// "h"
+	int wmax;								// "wmax"
+	int hmax;								// "hmax"
+	int wmin;								// "wmin"
+	int hmin;								// "hmin"
+	char* id;								// "id"
+	int* btype;							// "btype"
+	int* battr;							// "battr"
+	int pos;								// "pos"
+	char** mimes;						// "mimes"
+	int topframe;						// "topframe"
+	int* expdir;						// "expdir"
+	int* api;								// "api"
+}Banner;
+
+typedef struct {
 	Banner *banner;
 	int nbanner;
 }CompanionAd;
@@ -366,23 +388,6 @@ typedef struct {
 	int* api;								// "api"
 	int* companiontype;			// "companiontype"
 }Video;
-
-typedef struct {
-	int w;									// "w"
-	int h;									// "h"
-	int wmax;								// "wmax"
-	int hmax;								// "hmax"
-	int wmin;								// "wmin"
-	int hmin;								// "hmin"
-	char* id;								// "id"
-	int* btype;							// "btype"
-	int* battr;							// "battr"
-	int pos;								// "pos"
-	char** mimes;						// "mimes"
-	int topframe;						// "topframe"
-	int* expdir;						// "expdir"
-	int* api;								// "api"
-}Banner;
 
 typedef struct {
 	char* id;								// "id"

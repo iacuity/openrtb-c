@@ -37,6 +37,9 @@ int json_copy_string(char **dst, struct json_object* obj) {
 	int len = 0;
 	*dst = NULL;
 
+	if (NULL == obj)
+		return COPY_SUCCESS;
+
 	len = json_object_get_string_len(obj);
 	
 	if (len > 0) {
@@ -53,6 +56,30 @@ int json_copy_string(char **dst, struct json_object* obj) {
 	return COPY_SUCCESS;
 }
 
+int json_copy_int_array(int **array, int *nsize, struct json_object* obj) {
+	int idx = 0;
+	int len = 0;
+	int* temp;
+
+	*array = NULL;
+	*nsize = 0;
+
+	if (NULL == obj)
+		return COPY_SUCCESS;
+
+	len = json_object_array_length(obj);
+
+	if (len > 0) {
+		temp = (int*) malloc(sizeof(int) * len);
+		if (NULL == temp) {
+			ORTB_ERROR("NO MEMORY AVAILABLE");
+			return NO_MEMORY;
+		}
+	}
+
+	return COPY_SUCCESS;
+}
+
 int json_copy_string_array(char ***array, int *nsize, struct json_object* obj) {
 	int idx = 0;
 	int len = 0;
@@ -61,6 +88,10 @@ int json_copy_string_array(char ***array, int *nsize, struct json_object* obj) {
 
 	*array = NULL;
 	*nsize = 0;
+	
+	if (NULL == obj)
+		return COPY_SUCCESS;
+	
 	len = json_object_array_length(obj);
 	if (len > 0) {
 		temp = (char **) malloc(sizeof(char) * len);
@@ -68,16 +99,22 @@ int json_copy_string_array(char ***array, int *nsize, struct json_object* obj) {
 			ORTB_ERROR("NO MEMORY AVAILABLE");
 			return NO_MEMORY;
 		}
-		
+
+		int nelement = 0;
 		for(idx = 0; idx < len; idx++) {
 			json_object* val = json_object_array_get_idx(obj, idx);
+			
+			if (NULL == val)
+				continue;
+
 			ele = NULL;
 			json_copy_string(&ele, val);
-			temp[idx] = ele;
+			temp[nelement] = ele;
+			nelement++;
 		}
 
 		*array = temp;
-		*nsize = len;
+		*nsize = nelement;
 	}
 
 	return COPY_SUCCESS;
