@@ -9,123 +9,183 @@ enum O_RTB_ERROR {
 };
 
 // REQUEST
-#define ORTB_ID						"id"
-#define ORTB_TEST 				"test"
-#define ORTB_AT 					"at"
-#define ORTB_TMAX 				"tmax"
-#define ORTB_WSEAT 				"wseat"
-#define ORTB_ALLIMPS 			"allimps"
-#define ORTB_CUR 					"cur"
-#define ORTB_BCAT 				"bcat"
-#define ORTB_BADV 				"badv"
+#define ORTB_ID                     "id"
+#define ORTB_TEST                   "test"
+#define ORTB_AT                     "at"
+#define ORTB_TMAX                   "tmax"
+#define ORTB_WSEAT                  "wseat"
+#define ORTB_ALLIMPS                "allimps"
+#define ORTB_CUR                    "cur"
+#define ORTB_BCAT                   "bcat"
+#define ORTB_BADV                   "badv"
 
 // IMPRESSION
-#define ORTB_BANNER									"banner"
-#define ORTB_VIDEO									"video"
-#define ORTB_NATIVE									"native"
-#define ORTB_DISPLAYMANAGER					"displaymanager"
-#define ORTB_DISPLAYMANAGERVER			"displaymanagerver"
-#define ORTB_INSTL									"instl"
-#define ORTB_TAGID									"tagid"
-#define ORTB_BIDFLOOR								"bidfloor"
-#define ORTB_BIDFLOORCUR						"bidfloorcur"
-#define ORTB_SECURE									"secure"
-#define ORTB_IFRAMEBUSTER						"iframebuster"
-#define	ORTB_PMP										"pmp"
+#define ORTB_BANNER                 "banner"
+#define ORTB_VIDEO                  "video"
+#define ORTB_NATIVE                 "native"
+#define ORTB_DISPLAYMANAGER         "displaymanager"
+#define ORTB_DISPLAYMANAGERVER      "displaymanagerver"
+#define ORTB_INSTL                  "instl"
+#define ORTB_TAGID                  "tagid"
+#define ORTB_BIDFLOOR               "bidfloor"
+#define ORTB_BIDFLOORCUR            "bidfloorcur"
+#define ORTB_SECURE                 "secure"
+#define ORTB_IFRAMEBUSTER           "iframebuster"
+#define ORTB_PMP                    "pmp"
 
 // BANNER
-#define ORTB_W											"w"
-#define ORTB_H											"h"
-#define ORTB_WMAX										"wmax"
-#define ORTB_HMAX										"hmax"
-#define ORTB_WMIN										"wmin"
-#define ORTB_HMIN										"hmin"
-#define ORTB_BTYPE									"btype"
-#define ORTB_BATTR									"battr"
-#define ORTB_POS										"pos"
-#define ORTB_MIMES									"mimes"
-#define ORTB_TOPFRAME								"topframe"
-#define ORTB_EXPDIR									"expdir"
-#define ORTB_API										"api"
+#define ORTB_W                      "w"
+#define ORTB_H                      "h"
+#define ORTB_WMAX                   "wmax"
+#define ORTB_HMAX                   "hmax"
+#define ORTB_WMIN                   "wmin"
+#define ORTB_HMIN                   "hmin"
+#define ORTB_BTYPE                  "btype"
+#define ORTB_BATTR                  "battr"
+#define ORTB_POS                    "pos"
+#define ORTB_MIMES                  "mimes"
+#define ORTB_TOPFRAME               "topframe"
+#define ORTB_EXPDIR                 "expdir"
+#define ORTB_API                    "api"
 
 // VIDEO
-#define ORTB_MIMES									"mimes"
-#define ORTB_MINDURATION						"minduration"
-#define ORTB_MAXDURATION						"maxduration"
-#define ORTB_PROTOCOL								"protocol"
-#define ORTB_PROTOCOLS							"protocols"
-#define ORTB_STARTDELAY							"startdelay"
-#define ORTB_LINEARITY							"linearity"
-#define ORTB_SEQUENCE								"sequence"
-#define ORTB_MAXEXTENDED						"maxextended"
-#define ORTB_MINBITRATE							"minbitrate"
-#define ORTB_MAXBITRATE							"maxbitrate"
-#define ORTB_BOXINGALLOWED					"boxingallowed"
-#define ORTB_PLAYBACKMETHOD					"playbackmethod"
-#define ORTB_DELIVERY								"delivery"
-#define ORTB_COMPANIONAD						"companionad"
-#define ORTB_COMPANIONTYPE 					"companiontype"
+#define ORTB_MINDURATION            "minduration"
+#define ORTB_MAXDURATION            "maxduration"
+#define ORTB_PROTOCOL               "protocol"
+#define ORTB_PROTOCOLS              "protocols"
+#define ORTB_STARTDELAY             "startdelay"
+#define ORTB_LINEARITY              "linearity"
+#define ORTB_SEQUENCE               "sequence"
+#define ORTB_MAXEXTENDED            "maxextended"
+#define ORTB_MINBITRATE             "minbitrate"
+#define ORTB_MAXBITRATE             "maxbitrate"
+#define ORTB_BOXINGALLOWED          "boxingallowed"
+#define ORTB_PLAYBACKMETHOD         "playbackmethod"
+#define ORTB_DELIVERY               "delivery"
+#define ORTB_COMPANIONAD            "companionad"
+#define ORTB_COMPANIONTYPE          "companiontype"
 
 // NATIVE
-#define ORTB_REQUEST								"request"
+#define ORTB_REQUEST                "request"
+
+// PMP
+#define ORTB_PRIVATEAUCTION         "private_auction"
+#define ORTB_DEALS                  "deals"
+
+// DEAL
+#define ORTB_BIDFLOOR               "bidfloor"
+#define ORTB_BIDFLOORCUR            "bidfloorcur"
+#define ORTB_WADOMAIN               "wadomain"
 
 // SITE
-#define ORTB_NAME										"name"
-#define ORTB_DOMAIN									"domain"
-#define ORTB_CAT										"cat"
-#define ORTB_SECTIONCAT							"sectioncat"
-#define ORTB_PAGECAT								"pagecat"
-#define ORTB_REF										"ref"
-#define ORTB_SEARCH									"search"
-#define ORTB_MOBILE									"mobile"
-#define ORTB_PRIVACYPOLICY					"privacypolicy"
-#define ORTB_KEYWORDS								"keywords"
+#define ORTB_GEO                    "geo"
+#define ORTB_NAME                   "name"
+#define ORTB_DOMAIN                 "domain"
+#define ORTB_CAT                    "cat"
+#define ORTB_SECTIONCAT             "sectioncat"
+#define ORTB_PAGECAT                "pagecat"
+#define ORTB_REF                    "ref"
+#define ORTB_SEARCH                 "search"
+#define ORTB_MOBILE                 "mobile"
+#define ORTB_PRIVACYPOLICY          "privacypolicy"
+#define ORTB_KEYWORDS               "keywords"
+#define ORTB_PUBLISHER              "publisher"
+#define ORTB_CONTENT                "content"
 
 // APP
-#define ORTB_BUNDLE									"bundle"
-#define ORTB_STOREURL								"storeurl"
-#define ORTB_VER										"ver"
-#define ORTB_PAID										"paid"
+#define ORTB_BUNDLE                 "bundle"
+#define ORTB_STOREURL               "storeurl"
+#define ORTB_VER                    "ver"
+#define ORTB_PAID                   "paid"
+
+// CONTENT
+#define ORTB_EPISODE                "episode"
+#define ORTB_TITLE                  "title"
+#define ORTB_SERIES                 "series"
+#define ORTB_SEASON                 "season"
+#define ORTB_URL                    "url"
+#define ORTB_VDEOQUALITY            "videoquality"
+#define ORTB_CONTEXT                "context"
+#define ORTB_CONTENTRATING          "contentrating"
+#define ORTB_USERRATIING            "userrating"
+#define ORTB_QAFMEDIARATING         "qagmediarating"
+#define ORTB_LIVESTREAM             "livestream"
+#define ORTB_SOURCERELATIONSHIP     "sourcerelationship"
+#define ORTB_LEN                    "len"
+#define ORTB_LANGUAGE               "language"
+#define ORTB_EMBEDDABLE             "embeddable"
 
 // DEVICE
-#define ORTB_UA											"ua"
-#define ORTB_DNT										"dnt"
-#define ORTB_LMT										"lmt"
-#define ORTB_IP											"ip"
-#define ORTB_IPV6										"ipv6"
-#define ORTB_DEVICETYPE							"devicetype"
-#define ORTB_MAKE										"make"
-#define ORTB_MODEL									"model"
-#define ORTB_OS											"os"
-#define ORTB_OSV										"osv"
-#define ORTB_HWV										"hwv"
-#define ORTB_PPI										"ppi"
-#define ORTB_PXRATIO								"pxratio"
-#define ORTB_JS											"js"
-#define ORTB_FLASHVER								"flashver"
-#define ORTB_LANGUAGE								"language"
-#define ORTB_CARRIER								"carrier"
-#define ORTB_CONNECTIONTYPE					"connectiontype"
-#define ORTB_IFS										"ifa"
-#define ORTB_DIDSHA1								"didsha1"
-#define ORTB_DIDMD5									"didmd5"
-#define ORTB_DPIDSHA1								"dpidsha1"
-#define ORTB_DPIDMD5								"dpidmd5"
-#define ORTB_MACSHA1								"macsha1"
-#define ORTB_MACMD5									"macmd5"
+#define ORTB_UA                     "ua"
+#define ORTB_DNT                    "dnt"
+#define ORTB_LMT                    "lmt"
+#define ORTB_IP                     "ip"
+#define ORTB_IPV6                   "ipv6"
+#define ORTB_DEVICETYPE             "devicetype"
+#define ORTB_MAKE                   "make"
+#define ORTB_MODEL                  "model"
+#define ORTB_OS                     "os"
+#define ORTB_OSV                    "osv"
+#define ORTB_HWV                    "hwv"
+#define ORTB_PPI                    "ppi"
+#define ORTB_PXRATIO                "pxratio"
+#define ORTB_JS                     "js"
+#define ORTB_FLASHVER               "flashver"
+#define ORTB_CARRIER                "carrier"
+#define ORTB_CONNECTIONTYPE         "connectiontype"
+#define ORTB_IFS                    "ifa"
+#define ORTB_DIDSHA1                "didsha1"
+#define ORTB_DIDMD5                 "didmd5"
+#define ORTB_DPIDSHA1               "dpidsha1"
+#define ORTB_DPIDMD5                "dpidmd5"
+#define ORTB_MACSHA1                "macsha1"
+#define ORTB_MACMD5                 "macmd5"
+
+// GEO
+#define ORTB_LAT                    "lat"
+#define ORTB_LON                    "lon"
+#define ORTB_TYPE                   "type"
+#define ORTB_COUNTRY                "country"
+#define ORTB_REGION                 "region"
+#define ORTB_REGIONFIPS104          "regionfips104"
+#define ORTB_METRO                  "metro"
+#define ORTB_CITY                   "city"
+#define ORTB_ZIP                    "zip"
+#define ORTB_UTCOFFSET              "utcoffset"
+
+// SEGMENT
+#define ORTB_SEGMENT                "segment"
+#define ORTB_VALUE                  "value"
 
 // USER
-#define ORTB_BUYERID								"buyerid"
-#define ORTB_YOB										"yob"
-#define ORTB_GENDER									"gender"
-#define ORTB_CUSTOMDATA							"customdata"
+#define ORTB_BUYERID                "buyerid"
+#define ORTB_YOB                    "yob"
+#define ORTB_GENDER                 "gender"
+#define ORTB_CUSTOMDATA             "customdata"
 
 // REGS
-#define ORTB_COPPA									"coppa"
+#define ORTB_COPPA                  "coppa"
 
 typedef struct {
 	int coppa;							// "coppa"
 }Regs;
+
+typedef struct {
+	char* id;								// "id"
+	char* name;							// "name"
+	char* value;						// "value"
+}Segment;
+
+typedef struct {
+	char* id;								// "id"
+	char* name;							// "name"
+	Segments* segment;			// "segment"
+}Data;
+
+typedef struct {
+	Data *data;
+	int ndata;
+}Datas;
 
 typedef struct {
 	char* id;								// "id"
@@ -134,10 +194,26 @@ typedef struct {
 	char* gender;						// "gender"
 	char* keywords;					// "keywords"
 	char* customdata;				// "customdata"
+	Geo *geo;								// "geo"
+	Datas* data;						// "data"
 }User;
 
 typedef struct {
+	float lat;							// "lat"
+	float lon;							// "lon"
+	int type;								// "type"
+	char* country;					// "country"
+	char* region;						// "region"
+	char* regionfips104;		// "regionfips104"
+	char* metro;						// "metro"
+	char* city;							// "city"
+	char* zip;							// "zip"
+	int utcoffset;					// "utcoffset"
+}Geo;
+
+typedef struct {
 	char* ua;								// "ua"
+	Geo *geo;								// "geo"
 	int dnt;								// "dnt"
 	int lmt;								// "lmt"
 	char* ip;								// "ip"
@@ -178,8 +254,45 @@ typedef struct {
 	char* ver;							// "ver"
 	int privacypolicy;			// "privacypolicy"
 	int paid;								// "paid"
+	Publisher* publisher;		// "publisher"
+	Content* content;				// "content"
 	char* keywords;					// "keywords"
 }App;
+
+typedef struct {
+	char* id;								// "id"
+	char* name;							// "name"
+	char** cat;							// "cat"
+	char* domain;						// "domain"
+}Producer;
+
+typedef struct{
+	char* id;								// "id"
+	int episode;						// "episode"
+	char* title;						// "title"
+	char* series;						// "series"
+	char* season;						// "season"
+	char* url;							// "url"
+	char** cat;							// "cat"
+	int videoquality;				// "videoquality"
+	int context;						// "context"
+	char* contentrating;		// "contentrating"
+	char* userrating;				// "userrating"
+	int qagmediarating;			// "qagmediarating"
+	char* keywords;					// "keywords"
+	int livestream;					// "livestream"
+	int sourcerelationship;	// "sourcerelationship"
+	int len;								// "len"
+	char* language;					// "language"
+	int embeddable;					// "embeddable"
+}Content;
+
+typedef struct {
+	char* id;								// "id"
+	char* name;							// "name"
+	char** cat;							// "cat"
+	char* domain;						// "domain"
+}Publisher;
 
 typedef struct {
 	char* id;								// "id"
@@ -192,8 +305,31 @@ typedef struct {
 	char* search;						// "search"
 	int mobile;							// "mobile"
 	int privacypolicy;			// "privacypolicy"
+	Publisher* publisher;		// "publisher"
+	Content* content;				// "content"
 	char* keywords;					// "keywords"
 }Site;
+
+typedef struct {
+	char* id;								// "id"
+	float bidfloor;					// "bidfloor"
+	char* bidfloorcur;			// "bidfloorcur"
+	int at;									// "at"
+	char** wseat;						// "wseat"
+	int nwseat;
+	char** wadomain;				// "wadomain"
+	int nwadomain;
+}Deal;
+
+typedef struct {
+	Deal *deal;
+	int ndeal;
+}Deals;
+
+typedef struct {
+	int private_auction;		// "private_auction"
+	Deals *deals;						// "deals"
+}Pmp;
 
 typedef struct {
 	char* request;					// "request"
@@ -201,6 +337,11 @@ typedef struct {
 	char* api;							// "api"
 	int* battr;							// "battr"
 }Native;
+
+typedef struct {
+	Banner *banner;
+	int nbanner;
+}CompanionAd;
 
 typedef struct {
 	char** mimes;						// "mimes"
@@ -221,7 +362,7 @@ typedef struct {
 	int* playbackmethod;		// "playbackmethod"
 	int* delivery;					// "delivery"
 	int pos;								// "pos"
-	int* companionad;				// "companionad"
+	CompanionAd* companionad;				// "companionad"
 	int* api;								// "api"
 	int* companiontype;			// "companiontype"
 }Video;
@@ -257,6 +398,7 @@ typedef struct {
 	int secure;							// "secure"
 	char** iframebuster;		// "iframebuster"
 	int niframebuster;
+	Pmp *pmp;
 }Impression;
 
 typedef struct {
