@@ -19,6 +19,7 @@ enum O_RTB_ERROR {
 #define ORTB_CUR                    "cur"
 #define ORTB_BCAT                   "bcat"
 #define ORTB_BADV                   "badv"
+#define ORTB_SITE		    "site"
 
 // IMPRESSION
 #define ORTB_BANNER                 "banner"
@@ -354,16 +355,16 @@ typedef struct {
 	char* id;								// "id"
 	int* btype;							// "btype"
 	int nbtype;
-	int* battr;							// "battr"
-	int nbattr;
+	int* battr;
+	int nbattr;							// "battr"
 	int pos;								// "pos"
-	char** mimes;						// "mimes"
-	int nmimes;
+	char** mimes;
+	int nmimes;						// "mimes"
 	int topframe;						// "topframe"
-	int* expdir;						// "expdir"
-	int nexpdir;
-	int* api;								// "api"
-	int napi;
+	int* expdir;
+	int nexpdir;						// "expdir"
+	int* api;
+	int napi;								// "api"
 }Banner;
 
 typedef struct {

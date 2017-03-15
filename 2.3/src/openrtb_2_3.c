@@ -166,8 +166,6 @@ int initBidRequestDefaultValues(BidRequest *bidRequest) {
 int parseBanner(json_object* bannerObj, Impression *imp) {
 	ORTB_LOG("In parseBanner()");
 	int retval = PARSE_FAILED;
-	int idx = 0;
-	int len = 0;
 	if (NULL == bannerObj) {
 		ORTB_ERROR("Banner object is absent in bidrequest");
 		return retval;
@@ -309,6 +307,13 @@ int parseImpression(json_object* imps, BidRequest *bidRequest) {
 		json_object_object_foreach(imp, key, val) {
 		do{
 			ORTB_LOG("Impression:Key:%s", key);
+		
+			if (NULL == val) {
+				ORTB_LOG("NULL value found for key: %s", key);
+				continue;
+			}
+
+
 			if (!strcmp(ORTB_ID, key)) {
 				if(COPY_SUCCESS != json_copy_string(&impression.id, val)) {
 						ORTB_ERROR("Failed to copy:%s", ORTB_ID);
@@ -379,10 +384,6 @@ int parseImpression(json_object* imps, BidRequest *bidRequest) {
                      		}
                              	break;	
 			}
-			
-	
-			
-				
 					
 		  }while(0);	
 		}	
@@ -393,6 +394,75 @@ int parseImpression(json_object* imps, BidRequest *bidRequest) {
                 bidRequest->impressions.impression[nelement-1]=impression;
 	}
 
+	return PARSE_SUCCESS;
+}
+int parsePublisher(json_object* publisher, Site *site) {
+	ORTB_LOG("parsing Publisher");
+	int retval = PARSE_FAILED;
+	if (NULL == publisher) {
+		ORTB_ERROR("Null value for Publisher key");
+		return retval;
+	}
+	site->publisher = (Publisher *)malloc(sizeof(Publisher));
+	json_object_object_foreach(publisher, key, val) {
+		ORTB_LOG("parsePublisher:key:%s", key);
+		do {
+			if (NULL == val) {
+				ORTB_LOG("Null value found for key: %s", key);
+				continue;
+			}
+
+			if (!strcmp(ORTB_ID, key)) {
+				if(COPY_SUCCESS != json_copy_string(&site->publisher->id, val)) {
+						ORTB_ERROR("failed to copy:%s", ORTB_ID);
+						return retval;
+				}
+
+				break;
+			}
+		}while(0);
+	}
+	return PARSE_SUCCESS;
+}
+int parseSite(json_object* site, BidRequest *bidRequest) {
+	ORTB_LOG("parsing site");
+	int retval = PARSE_FAILED;
+	if (NULL == site) {
+		ORTB_ERROR("Null value for site key");
+		return retval;
+	}
+	bidRequest->site = (Site *)malloc(sizeof(Site));
+	json_object_object_foreach(site, key, val) {
+		ORTB_LOG("parseSite:key:%s", key);
+		do {
+			if (NULL == val) {
+				ORTB_LOG("null value found for key: %s", key);
+				continue;
+			}
+
+			if (!strcmp(ORTB_ID, key)) {
+				if( COPY_SUCCESS != json_copy_string(&bidRequest->site->id, val)) {
+						ORTB_ERROR("Failed to copy:%s", ORTB_ID);
+						return retval;
+				}
+
+				break;
+			}
+			
+			if (!strcmp(ORTB_PUBLISHER, key)) {
+				if(PARSE_SUCCESS != parsePublisher(val,bidRequest->site)) {
+						ORTB_ERROR("Failed to copy:%s", ORTB_PUBLISHER);
+						return retval;
+				}
+
+				break;
+			}
+			
+
+
+		}while(0);
+	}
+		
 	return PARSE_SUCCESS;
 }
 
@@ -425,6 +495,14 @@ int parseBidRequest(json_object* root, BidRequest *bidRequest) {
 				break;
 			}
 	
+			if (!strcmp(ORTB_SITE,key)) {
+				retval=parseSite(val, bidRequest);
+				if (PARSE_SUCCESS != retval) {
+					ORTB_ERROR("Failed to parse:%s",ORTB_SITE);
+					return retval;
+				}
+				break;
+			}
 			if (!strcmp(ORTB_TEST, key)) {
 				bidRequest->test = json_object_get_int(val);
 				break;
