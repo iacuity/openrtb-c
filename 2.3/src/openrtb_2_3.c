@@ -46,7 +46,7 @@ int json_copy_string(char **dst, struct json_object* obj) {
 		*dst = (char*) malloc(sizeof(char) * (len + 1));
 		if (NULL == *dst) {
 			ORTB_ERROR("NO MEMORY AVAILABLE");
-			return NO_MEMORY;
+			return NO_MEMORY_AVAILABLE;
 		}
 	
 		strncpy(*dst, json_object_get_string(obj), len);
@@ -73,7 +73,7 @@ int json_copy_int_array(int **array, int *nsize, struct json_object* obj) {
 		temp = (int*) malloc(sizeof(int) * len);
 		if (NULL == temp) {
 			ORTB_ERROR("NO MEMORY AVAILABLE");
-			return NO_MEMORY;
+			return NO_MEMORY_AVAILABLE;
 		}
 	}
 
@@ -97,7 +97,7 @@ int json_copy_string_array(char ***array, int *nsize, struct json_object* obj) {
 		temp = (char **) malloc(sizeof(char) * len);
 		if (NULL == temp) {
 			ORTB_ERROR("NO MEMORY AVAILABLE");
-			return NO_MEMORY;
+			return NO_MEMORY_AVAILABLE;
 		}
 
 		int nelement = 0;
@@ -149,11 +149,13 @@ int initBidRequestDefaultValues(BidRequest *bidRequest) {
 	}while(0);
 }
 
+
 int parseImpression(json_object* imps, BidRequest *bidRequest) {
-	ORTB_LOG("In parseImpression()");
+	ORTB_LOG("In parseImpression() Parsing Impression Object");
 	int retval = PARSE_FAILED;
 	int idx = 0;
 	int len = 0;
+	bidRequest->impressions.impression=NULL;
 	if (NULL == imps) {
 		ORTB_ERROR("Impression is absent in bidrequest");
 		return retval;
@@ -171,14 +173,96 @@ int parseImpression(json_object* imps, BidRequest *bidRequest) {
 			ORTB_ERROR("Null Impression");
 			return retval;
 		}
-		
+		Impression impression;
 		json_object_object_foreach(imp, key, val) {
-			ORTB_LOG("Impression:%s", key);	
+		do{
+			ORTB_LOG("Impression:Key:%s", key);
+			if (!strcmp(ORTB_ID, key)) {
+				if(COPY_SUCCESS != json_copy_string(&impression.id, val)) {
+						ORTB_ERROR("Failed to copy:%s", ORTB_ID);
+						return retval;
+				}
+				break;
+			}
+		
+			if (!strcmp(ORTB_BANNER, key)) {
+				//retval = parseBanner(val, &impression);
+				retval = PARSE_SUCCESS;
+				if (PARSE_SUCCESS != retval) {
+					ORTB_ERROR("Failed to parse:%s", ORTB_BANNER);
+					return retval;
+				}
+				break;
+			}
+			
+			if (!strcmp(ORTB_BIDFLOOR, key)){
+				impression.bidfloor=json_object_get_double(val);
+				break;
+			}
+
+			if (!strcmp(ORTB_INSTL,key)) {
+				impression.instl=json_object_get_int(val);
+				break;
+			}
+	
+			if(!strcmp(ORTB_SECURE,key)){
+				impression.secure=json_object_get_int(val);
+				break;
+			}
+
+			if(!strcmp(ORTB_DISPLAYMANAGER, key)) {
+				if(COPY_SUCCESS != json_copy_string(&impression.displaymanager, val)) {
+                	       		ORTB_ERROR("Failed to copy:%s", ORTB_DISPLAYMANAGER);
+	  	                      	return retval;
+                     		}
+                             	break;	
+			}
+				
+			if(!strcmp(ORTB_DISPLAYMANAGERVER, key)) {
+				if(COPY_SUCCESS != json_copy_string(&impression.displaymanagerver, val)) {
+                	       		ORTB_ERROR("Failed to copy:%s", ORTB_DISPLAYMANAGERVER);
+	  	                      	return retval;
+                     		}
+                             	break;	
+			}
+			if(!strcmp(ORTB_TAGID, key)) {
+				if(COPY_SUCCESS != json_copy_string(&impression.tagid, val)) {
+                	       		ORTB_ERROR("Failed to copy:%s", ORTB_TAGID);
+	  	                      	return retval;
+                     		}
+                             	break;	
+			}
+			
+			if(!strcmp(ORTB_BIDFLOORCUR, key)) {
+				if(COPY_SUCCESS != json_copy_string(&impression.bidfloorcur, val)) {
+                	       		ORTB_ERROR("Failed to copy:%s", ORTB_BIDFLOORCUR);
+	  	                      	return retval;
+                     		}
+                             	break;	
+			}
+			
+			if(!strcmp(ORTB_IFRAMEBUSTER, key)) {
+				if(COPY_SUCCESS != json_copy_string_array(&impression.iframebuster,&impression.niframebuster, val)) {
+                	       		ORTB_ERROR("Failed to copy:%s", ORTB_IFRAMEBUSTER);
+	  	                      	return retval;
+                     		}
+                             	break;	
+			}
+			
+	
+			
+				
+					
+		  }while(0);	
 		}	
 			
+		nelement += 1;
+                bidRequest->impressions.nimpression = nelement;
+                bidRequest->impressions.impression = (Impression *)realloc(bidRequest->impressions.impression, nelement);
+                bidRequest->impressions.impression[nelement-1]=impression;
 	}
 
-	return retval;
+	return PARSE_SUCCESS;
 }
 
 int parseBidRequest(json_object* root, BidRequest *bidRequest) {
