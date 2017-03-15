@@ -149,6 +149,38 @@ int initBidRequestDefaultValues(BidRequest *bidRequest) {
 	}while(0);
 }
 
+int parseImpression(json_object* imps, BidRequest *bidRequest) {
+	ORTB_LOG("In parseImpression()");
+	int retval = PARSE_FAILED;
+	int idx = 0;
+	int len = 0;
+	if (NULL == imps) {
+		ORTB_ERROR("Impression is absent in bidrequest");
+		return retval;
+	}
+	len = json_object_array_length(imps);
+	if(len == 0) {
+		ORTB_ERROR("Impression is absent in bidrequest");
+		return retval;
+	}
+
+	int nelement = 0;
+	for(idx = 0; idx < len; idx++) { // iterating over impressions
+		json_object* imp = json_object_array_get_idx(imps, idx);
+		if (NULL == imp) {
+			ORTB_ERROR("Null Impression");
+			return retval;
+		}
+		
+		json_object_object_foreach(imp, key, val) {
+			ORTB_LOG("Impression:%s", key);	
+		}	
+			
+	}
+
+	return retval;
+}
+
 int parseBidRequest(json_object* root, BidRequest *bidRequest) {
 	int retval = PARSE_FAILED;
 	int vallen = 0;
@@ -168,7 +200,16 @@ int parseBidRequest(json_object* root, BidRequest *bidRequest) {
 
 				break;
 			}
-			
+		
+			if (!strcmp(ORTB_IMP, key)) {
+				retval = parseImpression(val, bidRequest);
+				if (PARSE_SUCCESS != retval) {
+					ORTB_ERROR("Failed to parse:%s", ORTB_IMP);
+					return retval;
+				}
+				break;
+			}
+	
 			if (!strcmp(ORTB_TEST, key)) {
 				bidRequest->test = json_object_get_int(val);
 				break;

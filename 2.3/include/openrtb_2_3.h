@@ -10,6 +10,7 @@ enum O_RTB_ERROR {
 
 // REQUEST
 #define ORTB_ID                     "id"
+#define ORTB_IMP                    "imp"
 #define ORTB_TEST                   "test"
 #define ORTB_AT                     "at"
 #define ORTB_TMAX                   "tmax"

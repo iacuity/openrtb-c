@@ -4,6 +4,14 @@
 
 #define SAMPLE_BID_REQ "{ \
 	\"id\": \"80ce30c53c16e6ede735f123ef6e32361bfc7b22\", \
+	\"imp\": [ { \"id\": \"1\", \
+		     \"bidfloor\": 0.03, \ 
+		     \"banner\": { \"h\": 250, \
+				   \"w\": 300, \ 
+				   \"pos\": 0 \ 
+                                 } \ 
+                   } \ 
+                 ], \
 	\"at\": 1, \
 	\"tmax\": 120, \
 	\"wseat\": [\"seat-1\", \"seat-2\"], \
@@ -44,6 +52,7 @@ int main() {
 	
 	if (ret != PARSE_SUCCESS) {
 		fprintf(stderr, "Error: failed to parse json\n");
+		return 1;
 	}
 
 	validateBidRequest(&bidRequest);
