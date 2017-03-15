@@ -353,12 +353,17 @@ typedef struct {
 	int hmin;								// "hmin"
 	char* id;								// "id"
 	int* btype;							// "btype"
+	int nbtype;
 	int* battr;							// "battr"
+	int nbattr;
 	int pos;								// "pos"
 	char** mimes;						// "mimes"
+	int nmimes;
 	int topframe;						// "topframe"
 	int* expdir;						// "expdir"
+	int nexpdir;
 	int* api;								// "api"
+	int napi;
 }Banner;
 
 typedef struct {

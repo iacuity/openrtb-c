@@ -75,6 +75,20 @@ int json_copy_int_array(int **array, int *nsize, struct json_object* obj) {
 			ORTB_ERROR("NO MEMORY AVAILABLE");
 			return NO_MEMORY_AVAILABLE;
 		}
+
+		int nelement = 0;
+		for(idx = 0; idx < len; idx++) {
+			json_object* val = json_object_array_get_idx(obj, idx);
+			
+			if (NULL == val)
+				continue;
+
+			temp[nelement] = json_object_get_int(val);
+			nelement++;
+		}
+
+		*array = temp;
+		*nsize = nelement;
 	}
 
 	return COPY_SUCCESS;
@@ -149,6 +163,124 @@ int initBidRequestDefaultValues(BidRequest *bidRequest) {
 	}while(0);
 }
 
+int parseBanner(json_object* bannerObj, Impression *imp) {
+	ORTB_LOG("In parseBanner()");
+	int retval = PARSE_FAILED;
+	int idx = 0;
+	int len = 0;
+	if (NULL == bannerObj) {
+		ORTB_ERROR("Banner object is absent in bidrequest");
+		return retval;
+	}
+
+	// Allocate memory for Banner objects.
+	imp->banner = (Banner *) malloc(sizeof(Banner));
+	Banner *banner = imp->banner;
+	int nelement = 0;
+	json_object_object_foreach(bannerObj, key, val) {
+		ORTB_LOG("parseBannerObj:key:%s", key);
+		do {
+			if (NULL == val) {
+				ORTB_LOG("NULL value found for key: %s", key);
+				continue;
+			}
+
+			if (!strcmp(ORTB_ID, key)) {
+				if(COPY_SUCCESS != json_copy_string(&banner->id, val)) {
+						ORTB_ERROR("Failed to copy:%s", ORTB_ID);
+						return retval;
+				}
+
+				break;
+			}
+		
+			if (!strcmp(ORTB_W, key)) {
+				banner->w= json_object_get_int(val);
+				break;
+			}
+
+			if (!strcmp(ORTB_H, key)) {
+				banner->h= json_object_get_int(val);
+				break;
+			}
+
+			if (!strcmp(ORTB_WMAX, key)) {
+				banner->wmax= json_object_get_int(val);
+				break;
+			}
+
+			if (!strcmp(ORTB_HMAX, key)) {
+				banner->hmax= json_object_get_int(val);
+				break;
+			}
+
+			if (!strcmp(ORTB_WMIN, key)) {
+				banner->wmin= json_object_get_int(val);
+				break;
+			}
+
+			if (!strcmp(ORTB_HMIN, key)) {
+				banner->hmin= json_object_get_int(val);
+				break;
+			}
+
+			if (!strcmp(ORTB_POS, key)) {
+				banner->pos = json_object_get_int(val);
+				break;
+			}
+			
+			if (!strcmp(ORTB_TOPFRAME, key)) {
+				banner->topframe = json_object_get_int(val);
+				break;
+			}
+			
+			if (!strcmp(ORTB_MIMES, key)) {
+				if(COPY_SUCCESS != json_copy_string_array(&banner->mimes, &banner->nmimes, val)) {
+					ORTB_ERROR("Failed to copy: %s", ORTB_MIMES);
+					return retval;
+				}
+				break;
+			}
+			
+			if (!strcmp(ORTB_BTYPE, key)) {
+				if(COPY_SUCCESS != json_copy_int_array(&banner->btype, &banner->nbtype, val)) {
+					ORTB_ERROR("Failed to copy: %s", ORTB_BTYPE);
+					return retval;
+				}
+				break;
+			}
+
+			if (!strcmp(ORTB_BATTR, key)) {
+				if(COPY_SUCCESS != json_copy_int_array(&banner->battr, &banner->nbattr, val)) {
+					ORTB_ERROR("Failed to copy: %s", ORTB_BATTR);
+					return retval;
+				}
+				break;
+			}
+
+			if (!strcmp(ORTB_EXPDIR, key)) {
+				if(COPY_SUCCESS != json_copy_int_array(&banner->expdir, &banner->nexpdir, val)) {
+					ORTB_ERROR("Failed to copy: %s", ORTB_EXPDIR);
+					return retval;
+				}
+				break;
+			}
+
+			if (!strcmp(ORTB_API, key)) {
+				if(COPY_SUCCESS != json_copy_int_array(&banner->api, &banner->napi, val)) {
+					ORTB_ERROR("Failed to copy: %s", ORTB_API);
+					return retval;
+				}
+				break;
+			}
+
+			ORTB_ERROR("Invalid key in Banner object: key: %s", key);
+		}while(0);
+	}
+
+	retval = PARSE_SUCCESS;
+	return retval;
+}
 
 int parseImpression(json_object* imps, BidRequest *bidRequest) {
 	ORTB_LOG("In parseImpression() Parsing Impression Object");
@@ -186,8 +318,7 @@ int parseImpression(json_object* imps, BidRequest *bidRequest) {
 			}
 		
 			if (!strcmp(ORTB_BANNER, key)) {
-				//retval = parseBanner(val, &impression);
-				retval = PARSE_SUCCESS;
+				retval = parseBanner(val, &impression);
 				if (PARSE_SUCCESS != retval) {
 					ORTB_ERROR("Failed to parse:%s", ORTB_BANNER);
 					return retval;
