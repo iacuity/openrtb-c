@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <assert.h>
 #include "openrtb_2_3.h"
 
@@ -47,21 +48,51 @@ int validateBidRequest(BidRequest *bidRequest) {
 	assert(2 == bidRequest->nbadv);
 	assert(!strcmp("badv-1",  bidRequest->badv[0]));
 	assert(!strcmp("badv-2",  bidRequest->badv[1]));
+
+	// Validate Impression Object
+	assert(1 == bidRequest->impressions.nimpression);
+	assert(!strcmp("1",  bidRequest->impressions.impression[0].id));
+	//assert(bidRequest->impressions.impression[0].bidfloor == float(0.03));
+
+	// Validate Banner Object
+	assert(250 == bidRequest->impressions.impression[0].banner->h);
+	assert(300 == bidRequest->impressions.impression[0].banner->w);
+	assert(0 == bidRequest->impressions.impression[0].banner->pos);
+	// Validate Site and Publisher
+	assert(!strcmp("102855",  bidRequest->site->id));
+	assert(!strcmp("8953",  bidRequest->site->publisher->id));
+
 	return 0;
 }
 
 int main() {
-	BidRequest bidRequest;
-	int ret = parseRequest(SAMPLE_BID_REQ, &bidRequest);
+	BidRequest *bidRequest = (BidRequest *) malloc(sizeof(BidRequest));
+	int ret = parseRequest(SAMPLE_BID_REQ, bidRequest);
 	
 	if (ret != PARSE_SUCCESS) {
 		fprintf(stderr, "Error: failed to parse json\n");
 		return 1;
 	}
 
-	validateBidRequest(&bidRequest);
+	validateBidRequest(bidRequest);
 
-	freeBidRequest(&bidRequest);
+	freeBidRequest(bidRequest);
+
+	double price = 11.2045;
+	BidResponse resp;
+	resp.id = "bid-id";
+	resp.cur = "USD";
+	resp.seat.seat = "seatname";
+	resp.seat.bid.id = "internal-bid-id";
+	resp.seat.bid.impid = "internal-bid-id";
+	resp.seat.bid.price = price;
+	resp.seat.bid.adm = "<AD Markup>";
+	resp.seat.bid.cid = "campaign-id";
+	resp.seat.bid.crid = "creative-id";
+	
+	char buff[2000] = {0};
+	createORTBBidResponse(buff, &resp);
+	printf ("The json object created: %s \n", buff);
 
 	return 0;
 }

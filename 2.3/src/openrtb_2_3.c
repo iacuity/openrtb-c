@@ -134,7 +134,7 @@ int json_copy_string_array(char ***array, int *nsize, struct json_object* obj) {
 	return COPY_SUCCESS;
 }
 
-void freeBidRequest(BidRequest *bidRequest) {
+/*void freeBidRequest(BidRequest *bidRequest) {
 	do{
 		if (NULL == bidRequest)
 			break;
@@ -146,21 +146,324 @@ void freeBidRequest(BidRequest *bidRequest) {
 		FREE_AND_RESET_LIST(bidRequest->nbcat, bidRequest->bcat);	
 		FREE_AND_RESET_LIST(bidRequest->nbadv, bidRequest->badv);	
 	}while(0);
-	
-	return;
+}*/
+
+void freeStringArray(char **str, int num){
+	int i;
+	for(i=0;i<num;i++)
+		free(str[i]);
 }
 
-int initBidRequestDefaultValues(BidRequest *bidRequest) {
-	do {
-		if (NULL == bidRequest)
-			break;
-		
-		if (0 == bidRequest->at)
-			bidRequest->at = 2; // 2 is for Second Price Plus
+void freePublisherObject(Publisher *pub){
+	if(pub == NULL)
+		return;
+	if(pub->id != NULL){
+		free(pub->id);
+		pub->id = NULL;
+	}
+	if(pub->name != NULL){
+		free(pub->name);
+		pub->name = NULL;
+	}
+	if(pub->cat != NULL){
+		free(pub->cat);
+		pub->cat = NULL;
+	}
+	if(pub->domain != NULL){
+		free(pub->domain);
+		pub->domain = NULL;
+	}
+	free(pub);
+}
 
-		if (0 == bidRequest->at)
-			bidRequest->test = 0; // 1 is for live, 0 for live
-	}while(0);
+void freeSiteObject(Site *site){
+	if(site == NULL)
+		return;
+	if(site->id != NULL){
+		free(site->id);
+		site->id = NULL;
+	}
+	if(site->name != NULL){
+		free(site->name);
+		site->name = NULL;
+	}
+	if(site->domain != NULL){
+		free(site->domain);
+		site->domain = NULL;
+	}
+	if(site->cat != NULL){
+		free(site->cat);
+		site->cat = NULL;
+	}
+	if(site->sectioncat != NULL){
+		free(site->sectioncat);
+		site->sectioncat = NULL;
+	}
+	if(site->pagecat != NULL){
+		free(site->pagecat);
+		site->pagecat = NULL;
+	}
+	if(site->ref != NULL){
+		free(site->ref);
+		site->ref = NULL;
+	}
+	if(site->search != NULL){
+		free(site->search);
+		site->search = NULL;
+	}
+	if(site->publisher != NULL){
+		freePublisherObject(site->publisher);
+		site->publisher = NULL;
+	}
+	if(site->content != NULL){
+		//freeContentObject();
+		site->content = NULL;
+	}
+	if(site->keywords != NULL){
+		free(site->keywords);
+		site->keywords = NULL;
+	}
+	free(site);
+}
+
+void freeBannerObject(Banner *banner){
+	if(banner == NULL)
+		return;
+	if(banner->id != NULL){
+		free(banner->id);
+		banner->id = NULL;
+	}
+	if(banner->btype != NULL){
+		free(banner->btype);
+		banner->btype = NULL;
+		banner->nbtype = 0;
+	}
+	if(banner->battr != NULL){
+		free(banner->battr);
+		banner->battr = NULL;
+		banner->nbattr = 0;
+	}
+	if(banner->mimes != NULL){
+		freeStringArray(banner->mimes, banner->nmimes);
+		free(banner->mimes);
+		banner->mimes = NULL;
+		banner->nmimes = 0;
+	}
+	if(banner->expdir = NULL){
+		free(banner->expdir);
+		banner->expdir = NULL;
+		banner->nexpdir = 0;
+	}
+	if(banner->api != NULL){
+		free(banner->api);
+		banner->api = NULL;
+		banner->napi = 0;
+	}
+	free(banner);
+}
+
+void freeImpressionObject(Impression *imp){
+	if(imp == NULL)
+		return;
+	if(imp->id != NULL){
+		free(imp->id);
+		imp->id = NULL;
+	}
+	if(imp->banner != NULL){
+		freeBannerObject(imp->banner);
+		imp->banner = NULL;
+	}
+	if(imp->video != NULL){
+		//freeVideoObject(imp->video);
+		imp->video = NULL;
+	}
+	if(imp->native != NULL){
+		//freeNativeObject(imp->native);
+		imp->native = NULL;
+	}
+	if(imp->displaymanager != NULL){
+		free(imp->displaymanager);
+		imp->displaymanager = NULL;
+	}
+	if(imp->displaymanagerver != NULL){
+		free(imp->displaymanagerver);
+		imp->displaymanagerver = NULL;
+	}
+	if(imp->tagid != NULL){
+		free(imp->tagid );
+		imp->tagid = NULL;
+	}
+	if(imp->bidfloorcur != NULL){
+		free(imp->bidfloorcur);
+		imp->bidfloorcur = NULL;
+	}
+	if(imp->iframebuster != NULL){
+		freeStringArray(imp->iframebuster, imp->niframebuster);
+		free(imp->iframebuster);
+		imp->iframebuster = NULL;
+		imp->niframebuster = 0;
+	}
+	if(imp->pmp != NULL){
+		//freePmpObject(imp->pmp);
+		imp->pmp = NULL;
+	}
+	free(imp);
+}
+
+void freeBidRequest(BidRequest *bidRequest){
+	if(bidRequest == NULL)
+		return;
+	int i;
+	if(bidRequest->id != NULL){
+		free(bidRequest->id);
+		bidRequest->id = NULL;
+	}
+	if(bidRequest->site != NULL){
+		freeSiteObject(bidRequest->site);
+		bidRequest->site = NULL;
+	}
+	if(bidRequest->app != NULL){
+		//freeAppObject(bidRequest->app);
+		bidRequest->app = NULL;
+	}
+	if(bidRequest->device != NULL){
+		//freeDeviceObject(bidRequest->device);
+		bidRequest->device = NULL;
+	}
+	if(bidRequest->user != NULL){
+		//freeUserObject(bidRequest->user);
+		bidRequest->user = NULL;
+	}
+	if(bidRequest->wseat != NULL){
+		freeStringArray(bidRequest->wseat, bidRequest->nwseat);
+		free(bidRequest->wseat);
+		bidRequest->wseat = NULL;
+		bidRequest->nwseat = 0;
+	}
+	if(bidRequest->cur != NULL){
+		freeStringArray(bidRequest->cur, bidRequest->ncur);
+		free(bidRequest->cur);
+		bidRequest->cur = NULL;
+		bidRequest->ncur = 0;
+	}
+	if(bidRequest->bcat != NULL){
+		freeStringArray(bidRequest->bcat, bidRequest->nbcat);
+		free(bidRequest->bcat);
+		bidRequest->bcat = NULL;
+		bidRequest->nbcat = 0;
+	}
+	if(bidRequest->badv != NULL){
+		freeStringArray(bidRequest->badv, bidRequest->nbadv);
+		free(bidRequest->badv);
+		bidRequest->badv = NULL;
+		bidRequest->nbadv = 0;
+	}
+	if(bidRequest->regs != NULL){
+		//freeRegsObject(bidRequest->regs);
+		bidRequest->regs = NULL;
+	}
+	if(bidRequest->impressions.impression != NULL){
+		for(i=0; i< bidRequest->impressions.nimpression; i++){
+			freeImpressionObject(bidRequest->impressions.impression+i);
+		}
+		bidRequest->impressions.nimpression = 0;
+		bidRequest->impressions.impression = NULL;
+	}
+	free(bidRequest);
+}
+
+int initBidRequestObject(BidRequest *bidRequest){
+	if(bidRequest == NULL)
+		return -1;
+	bidRequest->id = NULL;
+	bidRequest->site = NULL;
+	bidRequest->app = NULL;
+	bidRequest->device = NULL;
+	bidRequest->user = NULL;
+	bidRequest->test = 0;
+	bidRequest->at = 2;
+	bidRequest->tmax = 0;
+	bidRequest->wseat = NULL;
+	bidRequest->nwseat = 0;
+	bidRequest->allimps = 0;
+	bidRequest->cur = NULL;
+	bidRequest->ncur = 0;
+	bidRequest->bcat = NULL;
+	bidRequest->nbcat = 0;
+	bidRequest->badv = NULL;
+	bidRequest->nbadv = 0;
+	bidRequest->regs = NULL;
+	bidRequest->impressions.nimpression = 0;
+	bidRequest->impressions.impression = NULL;
+	return 0;
+}
+
+int initImpressionObject(Impression *imp){
+	if(imp == NULL)
+		return -1;
+	imp->id = NULL;	
+	imp->banner = NULL;
+	imp->video = NULL;
+	imp->native = NULL;
+	imp->displaymanager = NULL;
+	imp->displaymanagerver = NULL;
+	imp->instl = 0;	
+	imp->tagid = NULL;
+	imp->bidfloor = 0;
+	imp->bidfloorcur = NULL;
+	imp->secure = 0;
+	imp->iframebuster = NULL;
+	imp->niframebuster = 0;
+	imp->pmp = NULL;
+	return 0;
+}
+
+int initBannerObject(Banner *banner){
+	if(banner == NULL)
+		return -1;
+	banner->w = 0;
+	banner->h = 0;
+	banner->wmax = 0;
+	banner->hmax = 0;
+	banner->wmin = 0;
+	banner->hmin = 0;
+	banner->id = NULL;
+	banner->btype = NULL;
+	banner->nbtype = 0;
+	banner->battr = NULL;
+	banner->nbattr = 0;
+	banner->pos = 0;
+	banner->mimes = NULL;
+	banner->nmimes = 0;
+	banner->topframe = 0;
+	banner->expdir = NULL;
+	banner->nexpdir = 0;
+	banner->api = NULL;
+	banner->napi = 0;
+	return 0;
+}
+
+int initSiteObject(Site *site){
+	site->id = NULL;
+	site->name = NULL;
+	site->domain = NULL;
+	site->cat = NULL;
+	site->sectioncat = NULL;
+	site->pagecat = NULL;
+	site->ref = NULL;
+	site->search = NULL;
+	site->mobile = 0;
+	site->privacypolicy = 0;
+	site->publisher = NULL;
+	site->content = NULL;
+	site->keywords = NULL;
+}
+
+int initPublisherObject(Publisher *pub){
+	pub->id = NULL;
+	pub->name = NULL;
+	pub->cat = NULL;
+	pub->domain = NULL;
 }
 
 int parseBanner(json_object* bannerObj, Impression *imp) {
@@ -174,6 +477,7 @@ int parseBanner(json_object* bannerObj, Impression *imp) {
 	// Allocate memory for Banner objects.
 	imp->banner = (Banner *) malloc(sizeof(Banner));
 	Banner *banner = imp->banner;
+	initBannerObject(banner);
 	int nelement = 0;
 	json_object_object_foreach(bannerObj, key, val) {
 		ORTB_LOG("parseBannerObj:key:%s", key);
@@ -303,7 +607,11 @@ int parseImpression(json_object* imps, BidRequest *bidRequest) {
 			ORTB_ERROR("Null Impression");
 			return retval;
 		}
-		Impression impression;
+		nelement += 1;
+                bidRequest->impressions.nimpression = nelement;
+                bidRequest->impressions.impression = (Impression *)realloc(bidRequest->impressions.impression, sizeof(Impression) * nelement);
+		Impression *impression = bidRequest->impressions.impression + (nelement - 1);
+		initImpressionObject(impression);
 		json_object_object_foreach(imp, key, val) {
 		do{
 			ORTB_LOG("Impression:Key:%s", key);
@@ -315,7 +623,7 @@ int parseImpression(json_object* imps, BidRequest *bidRequest) {
 
 
 			if (!strcmp(ORTB_ID, key)) {
-				if(COPY_SUCCESS != json_copy_string(&impression.id, val)) {
+				if(COPY_SUCCESS != json_copy_string(&impression->id, val)) {
 						ORTB_ERROR("Failed to copy:%s", ORTB_ID);
 						return retval;
 				}
@@ -323,7 +631,7 @@ int parseImpression(json_object* imps, BidRequest *bidRequest) {
 			}
 		
 			if (!strcmp(ORTB_BANNER, key)) {
-				retval = parseBanner(val, &impression);
+				retval = parseBanner(val, impression);
 				if (PARSE_SUCCESS != retval) {
 					ORTB_ERROR("Failed to parse:%s", ORTB_BANNER);
 					return retval;
@@ -332,22 +640,22 @@ int parseImpression(json_object* imps, BidRequest *bidRequest) {
 			}
 			
 			if (!strcmp(ORTB_BIDFLOOR, key)){
-				impression.bidfloor=json_object_get_double(val);
+				impression->bidfloor=json_object_get_double(val);
 				break;
 			}
 
 			if (!strcmp(ORTB_INSTL,key)) {
-				impression.instl=json_object_get_int(val);
+				impression->instl=json_object_get_int(val);
 				break;
 			}
 	
 			if(!strcmp(ORTB_SECURE,key)){
-				impression.secure=json_object_get_int(val);
+				impression->secure=json_object_get_int(val);
 				break;
 			}
 
 			if(!strcmp(ORTB_DISPLAYMANAGER, key)) {
-				if(COPY_SUCCESS != json_copy_string(&impression.displaymanager, val)) {
+				if(COPY_SUCCESS != json_copy_string(&impression->displaymanager, val)) {
                 	       		ORTB_ERROR("Failed to copy:%s", ORTB_DISPLAYMANAGER);
 	  	                      	return retval;
                      		}
@@ -355,14 +663,14 @@ int parseImpression(json_object* imps, BidRequest *bidRequest) {
 			}
 				
 			if(!strcmp(ORTB_DISPLAYMANAGERVER, key)) {
-				if(COPY_SUCCESS != json_copy_string(&impression.displaymanagerver, val)) {
+				if(COPY_SUCCESS != json_copy_string(&impression->displaymanagerver, val)) {
                 	       		ORTB_ERROR("Failed to copy:%s", ORTB_DISPLAYMANAGERVER);
 	  	                      	return retval;
                      		}
                              	break;	
 			}
 			if(!strcmp(ORTB_TAGID, key)) {
-				if(COPY_SUCCESS != json_copy_string(&impression.tagid, val)) {
+				if(COPY_SUCCESS != json_copy_string(&impression->tagid, val)) {
                 	       		ORTB_ERROR("Failed to copy:%s", ORTB_TAGID);
 	  	                      	return retval;
                      		}
@@ -370,7 +678,7 @@ int parseImpression(json_object* imps, BidRequest *bidRequest) {
 			}
 			
 			if(!strcmp(ORTB_BIDFLOORCUR, key)) {
-				if(COPY_SUCCESS != json_copy_string(&impression.bidfloorcur, val)) {
+				if(COPY_SUCCESS != json_copy_string(&impression->bidfloorcur, val)) {
                 	       		ORTB_ERROR("Failed to copy:%s", ORTB_BIDFLOORCUR);
 	  	                      	return retval;
                      		}
@@ -378,7 +686,7 @@ int parseImpression(json_object* imps, BidRequest *bidRequest) {
 			}
 			
 			if(!strcmp(ORTB_IFRAMEBUSTER, key)) {
-				if(COPY_SUCCESS != json_copy_string_array(&impression.iframebuster,&impression.niframebuster, val)) {
+				if(COPY_SUCCESS != json_copy_string_array(&impression->iframebuster,&impression->niframebuster, val)) {
                 	       		ORTB_ERROR("Failed to copy:%s", ORTB_IFRAMEBUSTER);
 	  	                      	return retval;
                      		}
@@ -387,11 +695,6 @@ int parseImpression(json_object* imps, BidRequest *bidRequest) {
 					
 		  }while(0);	
 		}	
-			
-		nelement += 1;
-                bidRequest->impressions.nimpression = nelement;
-                bidRequest->impressions.impression = (Impression *)realloc(bidRequest->impressions.impression, nelement);
-                bidRequest->impressions.impression[nelement-1]=impression;
 	}
 
 	return PARSE_SUCCESS;
@@ -404,6 +707,7 @@ int parsePublisher(json_object* publisher, Site *site) {
 		return retval;
 	}
 	site->publisher = (Publisher *)malloc(sizeof(Publisher));
+	initPublisherObject(site->publisher);
 	json_object_object_foreach(publisher, key, val) {
 		ORTB_LOG("parsePublisher:key:%s", key);
 		do {
@@ -432,6 +736,7 @@ int parseSite(json_object* site, BidRequest *bidRequest) {
 		return retval;
 	}
 	bidRequest->site = (Site *)malloc(sizeof(Site));
+	initSiteObject(bidRequest->site);
 	json_object_object_foreach(site, key, val) {
 		ORTB_LOG("parseSite:key:%s", key);
 		do {
@@ -469,6 +774,8 @@ int parseSite(json_object* site, BidRequest *bidRequest) {
 int parseBidRequest(json_object* root, BidRequest *bidRequest) {
 	int retval = PARSE_FAILED;
 	int vallen = 0;
+
+	initBidRequestObject(bidRequest);
 	json_object_object_foreach(root, key, val) {
 		ORTB_LOG("parseBidRequest:key:%s", key);
 		do {
@@ -566,8 +873,13 @@ int parseBidRequest(json_object* root, BidRequest *bidRequest) {
 
 int parseRequest(const char* src, BidRequest *bidRequest) {
 	ORTB_LOG("In parse. parsing bid request object...");
-	json_object* root = json_tokener_parse(src);
+	json_object* root = NULL;
+	root = json_tokener_parse(src);
 	int retval = PARSE_FAILED; 
+	if (NULL == root) {
+		ORTB_ERROR("Failed to parse bidrequest JSON");
+		return retval;
+	}
 	do{
 		JSON_CHECK_FOR_NULL(root, "Invalid input json: %s", src);
 
@@ -583,3 +895,59 @@ int parseRequest(const char* src, BidRequest *bidRequest) {
 
 	return retval;
 }
+
+int createORTBBidResponse(char *buff, BidResponse *resp) {
+	/*Creating a json object*/
+	json_object *jresp = json_object_new_object();
+	
+	// start-seat create seatbid array
+	json_object *jseatbids = json_object_new_array();
+	
+	// start-bid create bid array
+	json_object *jbids = json_object_new_array();
+
+	json_object *jbidobj = json_object_new_object();
+	json_object *jbidid = json_object_new_string(resp->seat.bid.id);
+	json_object_object_add (jbidobj, ORTB_RESP_ID, jbidid);
+	json_object *jbidimpid = json_object_new_string(resp->seat.bid.impid);
+	json_object_object_add (jbidobj, ORTB_RESP_IMPID, jbidimpid);
+
+	char tempbuffprice[20];
+	sprintf(tempbuffprice, "%.6f", resp->seat.bid.price);
+
+	json_object *jbidprice = json_object_new_double_s(resp->seat.bid.price, tempbuffprice);
+	json_object_object_add (jbidobj, ORTB_RESP_PRICE, jbidprice);
+
+	json_object *jbidcid = json_object_new_string(resp->seat.bid.cid);
+	json_object_object_add (jbidobj, ORTB_RESP_CID, jbidcid);
+	json_object *jbidcrid = json_object_new_string(resp->seat.bid.crid);
+	json_object_object_add (jbidobj, ORTB_RESP_CRID, jbidcrid);
+	json_object_array_add(jbids, jbidobj);
+	// end-bid 
+
+	json_object *jseatobj = json_object_new_object();
+	json_object_object_add (jseatobj, ORTB_RESP_BID, jbids);
+	json_object *jseat = json_object_new_string(resp->seat.seat);
+	json_object_object_add (jseatobj, ORTB_RESP_SEAT, jseat);
+	json_object_array_add(jseatbids, jseatobj);
+	// end-seat
+
+	json_object *jbid = json_object_new_string(resp->id);
+	json_object_object_add (jresp, ORTB_RESP_ID, jbid);
+	
+	json_object *jbcur = json_object_new_string(resp->cur);
+	json_object_object_add (jresp, ORTB_RESP_CUR, jbcur);
+	
+	json_object_object_add (jresp, ORTB_RESP_SEAT_BID, jseatbids);
+
+	/*Now printing the json object*/
+	//const char* tempbuff = json_object_to_json_string(jresp);
+	const char* tempbuff = json_object_to_json_string_ext(jresp, JSON_C_TO_STRING_PLAIN);
+	strcpy(buff, tempbuff);
+
+	json_object_put(jresp);
+	
+	return 0;
+}
+
+

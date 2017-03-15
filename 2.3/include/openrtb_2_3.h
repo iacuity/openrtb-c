@@ -168,6 +168,54 @@ enum O_RTB_ERROR {
 // REGS
 #define ORTB_COPPA                  "coppa"
 
+// RESPONSE
+#define ORTB_RESP_ID                "id"
+#define ORTB_RESP_SEAT_BID          "seatbid"
+#define ORTB_RESP_BID_ID            "bidid"
+#define ORTB_RESP_CUR               "cur"
+#define ORTB_RESP_NBR               "nbr"
+
+#define ORTB_RESP_BID               "bid"
+#define ORTB_RESP_SEAT              "seat"
+#define ORTB_RESP_GROUP             "group"
+
+#define ORTB_RESP_IMPID             "impid"
+#define ORTB_RESP_PRICE             "price"
+#define ORTB_RESP_ADID              "adid"
+#define ORTB_RESP_NURL              "nurl"
+#define ORTB_RESP_ADM               "adm"
+#define ORTB_RESP_ADDOMAIN          "adomain"
+#define ORTB_RESP_BUNDLE            "bundle"
+#define ORTB_RESP_IURL              "iurl"
+#define ORTB_RESP_CID               "cid"
+#define ORTB_RESP_CRID              "crid"
+#define ORTB_RESP_CAT               "cat"
+#define ORTB_RESP_ATTR              "attr"
+#define ORTB_RESP_DEAL_ID           "dealid"
+#define ORTB_RESP_W                 "w"
+#define ORTB_RESP_H                 "h"
+
+typedef struct {
+	char* id;
+	char *impid;
+	double price;
+	char* adm;
+	char* cid;
+	char* crid;
+}Bid;
+
+typedef struct {
+	Bid bid;	
+	char* seat;
+}Seat;
+
+typedef struct {
+        char* id;
+	Seat seat;	
+	char* cur;
+}BidResponse;
+
+
 typedef struct {
 	int coppa;							// "coppa"
 }Regs;
