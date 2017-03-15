@@ -20,6 +20,7 @@ enum O_RTB_ERROR {
 #define ORTB_BCAT                   "bcat"
 #define ORTB_BADV                   "badv"
 #define ORTB_SITE		    "site"
+#define ORTB_DEVICE		    "device"
 
 // IMPRESSION
 #define ORTB_BANNER                 "banner"
@@ -135,7 +136,7 @@ enum O_RTB_ERROR {
 #define ORTB_FLASHVER               "flashver"
 #define ORTB_CARRIER                "carrier"
 #define ORTB_CONNECTIONTYPE         "connectiontype"
-#define ORTB_IFS                    "ifa"
+#define ORTB_IFA                    "ifa"
 #define ORTB_DIDSHA1                "didsha1"
 #define ORTB_DIDMD5                 "didmd5"
 #define ORTB_DPIDSHA1               "dpidsha1"

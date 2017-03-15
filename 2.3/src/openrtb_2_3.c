@@ -41,14 +41,14 @@ int json_copy_string(char **dst, struct json_object* obj) {
 		return COPY_SUCCESS;
 
 	len = json_object_get_string_len(obj);
-	
+
 	if (len > 0) {
 		*dst = (char*) malloc(sizeof(char) * (len + 1));
 		if (NULL == *dst) {
 			ORTB_ERROR("NO MEMORY AVAILABLE");
 			return NO_MEMORY_AVAILABLE;
 		}
-	
+
 		strncpy(*dst, json_object_get_string(obj), len);
 		(*dst)[len] = 0;
 	}
@@ -79,7 +79,7 @@ int json_copy_int_array(int **array, int *nsize, struct json_object* obj) {
 		int nelement = 0;
 		for(idx = 0; idx < len; idx++) {
 			json_object* val = json_object_array_get_idx(obj, idx);
-			
+
 			if (NULL == val)
 				continue;
 
@@ -102,10 +102,10 @@ int json_copy_string_array(char ***array, int *nsize, struct json_object* obj) {
 
 	*array = NULL;
 	*nsize = 0;
-	
+
 	if (NULL == obj)
 		return COPY_SUCCESS;
-	
+
 	len = json_object_array_length(obj);
 	if (len > 0) {
 		temp = (char **) malloc(sizeof(char) * len);
@@ -117,7 +117,7 @@ int json_copy_string_array(char ***array, int *nsize, struct json_object* obj) {
 		int nelement = 0;
 		for(idx = 0; idx < len; idx++) {
 			json_object* val = json_object_array_get_idx(obj, idx);
-			
+
 			if (NULL == val)
 				continue;
 
@@ -140,11 +140,11 @@ int json_copy_string_array(char ***array, int *nsize, struct json_object* obj) {
 			break;
 
 		FREE_AND_RESET(bidRequest->id);
-		FREE_AND_RESET_LIST(bidRequest->nwseat, bidRequest->wseat);	
-		FREE_AND_RESET_LIST(bidRequest->ncur, bidRequest->cur);	
+		FREE_AND_RESET_LIST(bidRequest->nwseat, bidRequest->wseat);
+		FREE_AND_RESET_LIST(bidRequest->ncur, bidRequest->cur);
 
-		FREE_AND_RESET_LIST(bidRequest->nbcat, bidRequest->bcat);	
-		FREE_AND_RESET_LIST(bidRequest->nbadv, bidRequest->badv);	
+		FREE_AND_RESET_LIST(bidRequest->nbcat, bidRequest->bcat);
+		FREE_AND_RESET_LIST(bidRequest->nbadv, bidRequest->badv);
 	}while(0);
 }*/
 
@@ -174,6 +174,84 @@ void freePublisherObject(Publisher *pub){
 		pub->domain = NULL;
 	}
 	free(pub);
+}
+
+void freeDeviceObject(Device *dev){
+	if(dev == NULL)
+		return;
+	if(dev->ua != NULL){
+		free(dev->ua);
+		dev->ua = NULL;
+	}
+	if(dev->ip != NULL){
+		free(dev->ip);
+		dev->ip = NULL;
+	}
+	if(dev->ipv6 != NULL){
+		free(dev->ipv6);
+		dev->ipv6 = NULL;
+	}
+	if(dev->make != NULL){
+		free(dev->make);
+		dev->make = NULL;
+	}
+	if(dev->model != NULL){
+		free(dev->model);
+		dev->model = NULL;
+	}
+	if(dev->os != NULL){
+		free(dev->os);
+		dev->os = NULL;
+	}
+	if(dev->osv != NULL){
+		free(dev->osv);
+		dev->osv = NULL;
+	}
+	if(dev->hwv != NULL){
+		free(dev->hwv);
+		dev->hwv = NULL;
+	}
+	if(dev->flashver != NULL){
+		free(dev->flashver);
+		dev->flashver = NULL;
+	}
+	if(dev->language != NULL){
+		free(dev->language);
+		dev->language = NULL;
+	}
+	if(dev->carrier != NULL){
+		free(dev->carrier);
+		dev->carrier = NULL;
+	}
+	if(dev->ifa != NULL){
+		free(dev->ifa);
+		dev->ifa = NULL;
+	}
+	if(dev->didsha1 != NULL){
+		free(dev->didsha1);
+		dev->didsha1 = NULL;
+	}
+	if(dev->didmd5 != NULL){
+		free(dev->didmd5);
+		dev->didmd5 = NULL;
+	}
+	if(dev->dpidsha1 != NULL){
+		free(dev->dpidsha1);
+		dev->dpidsha1 = NULL;
+	}
+	if(dev->dpidmd5 != NULL){
+		free(dev->dpidmd5);
+		dev->dpidmd5 = NULL;
+	}
+	if(dev->macsha1 != NULL){
+		free(dev->macsha1);
+		dev->macsha1 = NULL;
+	}
+	if(dev->macmd5 != NULL){
+		free(dev->macmd5);
+		dev->macmd5 = NULL;
+	}
+	free(dev);
 }
 
 void freeSiteObject(Site *site){
@@ -327,7 +405,7 @@ void freeBidRequest(BidRequest *bidRequest){
 		bidRequest->app = NULL;
 	}
 	if(bidRequest->device != NULL){
-		//freeDeviceObject(bidRequest->device);
+		freeDeviceObject(bidRequest->device);
 		bidRequest->device = NULL;
 	}
 	if(bidRequest->user != NULL){
@@ -401,13 +479,13 @@ int initBidRequestObject(BidRequest *bidRequest){
 int initImpressionObject(Impression *imp){
 	if(imp == NULL)
 		return -1;
-	imp->id = NULL;	
+	imp->id = NULL;
 	imp->banner = NULL;
 	imp->video = NULL;
 	imp->native = NULL;
 	imp->displaymanager = NULL;
 	imp->displaymanagerver = NULL;
-	imp->instl = 0;	
+	imp->instl = 0;
 	imp->tagid = NULL;
 	imp->bidfloor = 0;
 	imp->bidfloorcur = NULL;
@@ -444,6 +522,8 @@ int initBannerObject(Banner *banner){
 }
 
 int initSiteObject(Site *site){
+	if(site == NULL)
+		return -1;
 	site->id = NULL;
 	site->name = NULL;
 	site->domain = NULL;
@@ -457,13 +537,268 @@ int initSiteObject(Site *site){
 	site->publisher = NULL;
 	site->content = NULL;
 	site->keywords = NULL;
+	return 0;
 }
 
 int initPublisherObject(Publisher *pub){
+	if(pub == NULL)
+		return -1;
 	pub->id = NULL;
 	pub->name = NULL;
 	pub->cat = NULL;
 	pub->domain = NULL;
+	return 0;
+}
+
+int initDeviceObject(Device *dev){
+	if(dev == NULL)
+		return -1;
+	dev->ua = NULL;
+	dev->dnt = 0;
+	dev->lmt = 0;
+	dev->ip = NULL;
+	dev->ipv6 = NULL;
+	dev->devicetype = 0;
+	dev->make = NULL;
+	dev->model = NULL;
+	dev->os = NULL;
+	dev->osv = NULL;
+	dev->hwv = NULL;
+	dev->h = 0;
+	dev->w = 0;
+	dev->ppi = 0;
+	dev->pxratio = 0;
+	dev->js = 0;
+	dev->flashver = NULL;
+	dev->language = NULL;
+	dev->carrier = NULL;
+	dev->connectiontype = 0;
+	dev->ifa = NULL;
+	dev->didsha1 = NULL;
+	dev->didmd5 = NULL;
+	dev->dpidsha1 = NULL;
+	dev->dpidmd5 = NULL;
+	dev->macsha1 = NULL;
+	dev->macmd5 = NULL;
+	return 0;
+}
+
+int parseDevice(json_object* devObj, BidRequest *bidRequest){
+	ORTB_LOG("In parseDevice()");
+	int retval = PARSE_FAILED;
+	if (NULL == devObj) {
+		ORTB_ERROR("Device object is absent in bidrequest");
+		return retval;
+	}
+
+	// Allocate memory for Device objects.
+	bidRequest->device = (Device *) malloc(sizeof(Device));
+	Device *dev = bidRequest->device;
+	initDeviceObject(dev);
+	int nelement = 0;
+	json_object_object_foreach(devObj, key, val) {
+		ORTB_LOG("parseDeviceObj:key:%s", key);
+		do {
+			if (NULL == val) {
+				ORTB_LOG("NULL value found for key: %s", key);
+				continue;
+			}
+
+			if (!strcmp(ORTB_UA, key)) {
+				if(COPY_SUCCESS != json_copy_string(&dev->ua, val)) {
+						ORTB_ERROR("Failed to copy:%s", ORTB_UA);
+						return retval;
+				}
+				break;
+			}
+
+			if (!strcmp(ORTB_W, key)) {
+				dev->w = json_object_get_int(val);
+				break;
+			}
+
+			if (!strcmp(ORTB_H, key)) {
+				dev->h = json_object_get_int(val);
+				break;
+			}
+
+			if (!strcmp(ORTB_DNT, key)) {
+				dev->dnt = json_object_get_int(val);
+				break;
+			}
+
+			if (!strcmp(ORTB_LMT, key)) {
+				dev->lmt = json_object_get_int(val);
+				break;
+			}
+
+			if (!strcmp(ORTB_DEVICETYPE, key)) {
+				dev->devicetype = json_object_get_int(val);
+				break;
+			}
+
+			if (!strcmp(ORTB_PPI, key)) {
+				dev->ppi = json_object_get_int(val);
+				break;
+			}
+
+			if (!strcmp(ORTB_JS, key)) {
+				dev->js = json_object_get_int(val);
+				break;
+			}
+
+			if (!strcmp(ORTB_CONNECTIONTYPE, key)) {
+				dev->connectiontype = json_object_get_int(val);
+				break;
+			}
+
+			if (!strcmp(ORTB_IP, key)) {
+				if(COPY_SUCCESS != json_copy_string(&dev->ip, val)) {
+					ORTB_ERROR("Failed to copy: %s", ORTB_IP);
+					return retval;
+				}
+				break;
+			}
+
+			if (!strcmp(ORTB_IPV6, key)) {
+				if(COPY_SUCCESS != json_copy_string(&dev->ipv6, val)) {
+					ORTB_ERROR("Failed to copy: %s", ORTB_IPV6);
+					return retval;
+				}
+				break;
+			}
+
+			if (!strcmp(ORTB_MAKE, key)) {
+				if(COPY_SUCCESS != json_copy_string(&dev->make, val)) {
+					ORTB_ERROR("Failed to copy: %s", ORTB_MAKE);
+					return retval;
+				}
+				break;
+			}
+
+			if (!strcmp(ORTB_MODEL, key)) {
+				if(COPY_SUCCESS != json_copy_string(&dev->model, val)) {
+					ORTB_ERROR("Failed to copy: %s", ORTB_MODEL);
+					return retval;
+				}
+				break;
+			}
+
+			if (!strcmp(ORTB_OS, key)) {
+				if(COPY_SUCCESS != json_copy_string(&dev->os, val)) {
+					ORTB_ERROR("Failed to copy: %s", ORTB_OS);
+					return retval;
+				}
+				break;
+			}
+
+			if (!strcmp(ORTB_OSV, key)) {
+				if(COPY_SUCCESS != json_copy_string(&dev->osv, val)) {
+					ORTB_ERROR("Failed to copy: %s", ORTB_OSV);
+					return retval;
+				}
+				break;
+			}
+
+			if (!strcmp(ORTB_HWV, key)) {
+				if(COPY_SUCCESS != json_copy_string(&dev->hwv, val)) {
+					ORTB_ERROR("Failed to copy: %s", ORTB_HWV);
+					return retval;
+				}
+				break;
+			}
+
+			if (!strcmp(ORTB_FLASHVER, key)) {
+				if(COPY_SUCCESS != json_copy_string(&dev->flashver, val)) {
+					ORTB_ERROR("Failed to copy: %s", ORTB_FLASHVER);
+					return retval;
+				}
+				break;
+			}
+
+			if (!strcmp(ORTB_LANGUAGE, key)) {
+				if(COPY_SUCCESS != json_copy_string(&dev->language, val)) {
+					ORTB_ERROR("Failed to copy: %s", ORTB_LANGUAGE);
+					return retval;
+				}
+				break;
+			}
+
+			if (!strcmp(ORTB_CARRIER, key)) {
+				if(COPY_SUCCESS != json_copy_string(&dev->carrier, val)) {
+					ORTB_ERROR("Failed to copy: %s", ORTB_CARRIER);
+					return retval;
+				}
+				break;
+			}
+
+			if (!strcmp(ORTB_IFA, key)) {
+				if(COPY_SUCCESS != json_copy_string(&dev->ifa, val)) {
+					ORTB_ERROR("Failed to copy: %s", ORTB_IFA);
+					return retval;
+				}
+				break;
+			}
+
+			if (!strcmp(ORTB_DIDSHA1, key)) {
+				if(COPY_SUCCESS != json_copy_string(&dev->didsha1, val)) {
+					ORTB_ERROR("Failed to copy: %s", ORTB_DIDSHA1);
+					return retval;
+				}
+				break;
+			}
+
+			if (!strcmp(ORTB_DIDMD5, key)) {
+				if(COPY_SUCCESS != json_copy_string(&dev->didmd5, val)) {
+					ORTB_ERROR("Failed to copy: %s", ORTB_DIDMD5);
+					return retval;
+				}
+				break;
+			}
+
+			if (!strcmp(ORTB_DPIDSHA1, key)) {
+				if(COPY_SUCCESS != json_copy_string(&dev->dpidsha1, val)) {
+					ORTB_ERROR("Failed to copy: %s", ORTB_DPIDSHA1);
+					return retval;
+				}
+				break;
+			}
+
+			if (!strcmp(ORTB_DPIDMD5, key)) {
+				if(COPY_SUCCESS != json_copy_string(&dev->dpidmd5, val)) {
+					ORTB_ERROR("Failed to copy: %s", ORTB_DPIDMD5);
+					return retval;
+				}
+				break;
+			}
+
+			if (!strcmp(ORTB_MACSHA1, key)) {
+				if(COPY_SUCCESS != json_copy_string(&dev->macsha1, val)) {
+					ORTB_ERROR("Failed to copy: %s", ORTB_MACSHA1);
+					return retval;
+				}
+				break;
+			}
+
+			if (!strcmp(ORTB_MACMD5, key)) {
+				if(COPY_SUCCESS != json_copy_string(&dev->macmd5, val)) {
+					ORTB_ERROR("Failed to copy: %s", ORTB_MACMD5);
+					return retval;
+				}
+				break;
+			}
+
+			if (!strcmp(ORTB_PXRATIO, key)) {
+				dev->pxratio = json_object_get_double(val);
+				break;
+			}
+
+			ORTB_ERROR("Invalid key in Device object: key: %s", key);
+		}while(0);
+	}
+
+	retval = PARSE_SUCCESS;
+	return retval;
 }
 
 int parseBanner(json_object* bannerObj, Impression *imp) {
@@ -495,7 +830,7 @@ int parseBanner(json_object* bannerObj, Impression *imp) {
 
 				break;
 			}
-		
+
 			if (!strcmp(ORTB_W, key)) {
 				banner->w= json_object_get_int(val);
 				break;
@@ -530,12 +865,12 @@ int parseBanner(json_object* bannerObj, Impression *imp) {
 				banner->pos = json_object_get_int(val);
 				break;
 			}
-			
+
 			if (!strcmp(ORTB_TOPFRAME, key)) {
 				banner->topframe = json_object_get_int(val);
 				break;
 			}
-			
+
 			if (!strcmp(ORTB_MIMES, key)) {
 				if(COPY_SUCCESS != json_copy_string_array(&banner->mimes, &banner->nmimes, val)) {
 					ORTB_ERROR("Failed to copy: %s", ORTB_MIMES);
@@ -543,7 +878,7 @@ int parseBanner(json_object* bannerObj, Impression *imp) {
 				}
 				break;
 			}
-			
+
 			if (!strcmp(ORTB_BTYPE, key)) {
 				if(COPY_SUCCESS != json_copy_int_array(&banner->btype, &banner->nbtype, val)) {
 					ORTB_ERROR("Failed to copy: %s", ORTB_BTYPE);
@@ -615,7 +950,7 @@ int parseImpression(json_object* imps, BidRequest *bidRequest) {
 		json_object_object_foreach(imp, key, val) {
 		do{
 			ORTB_LOG("Impression:Key:%s", key);
-		
+
 			if (NULL == val) {
 				ORTB_LOG("NULL value found for key: %s", key);
 				continue;
@@ -629,7 +964,7 @@ int parseImpression(json_object* imps, BidRequest *bidRequest) {
 				}
 				break;
 			}
-		
+
 			if (!strcmp(ORTB_BANNER, key)) {
 				retval = parseBanner(val, impression);
 				if (PARSE_SUCCESS != retval) {
@@ -638,7 +973,7 @@ int parseImpression(json_object* imps, BidRequest *bidRequest) {
 				}
 				break;
 			}
-			
+
 			if (!strcmp(ORTB_BIDFLOOR, key)){
 				impression->bidfloor=json_object_get_double(val);
 				break;
@@ -648,7 +983,7 @@ int parseImpression(json_object* imps, BidRequest *bidRequest) {
 				impression->instl=json_object_get_int(val);
 				break;
 			}
-	
+
 			if(!strcmp(ORTB_SECURE,key)){
 				impression->secure=json_object_get_int(val);
 				break;
@@ -659,42 +994,42 @@ int parseImpression(json_object* imps, BidRequest *bidRequest) {
                 	       		ORTB_ERROR("Failed to copy:%s", ORTB_DISPLAYMANAGER);
 	  	                      	return retval;
                      		}
-                             	break;	
+                             	break;
 			}
-				
+
 			if(!strcmp(ORTB_DISPLAYMANAGERVER, key)) {
 				if(COPY_SUCCESS != json_copy_string(&impression->displaymanagerver, val)) {
                 	       		ORTB_ERROR("Failed to copy:%s", ORTB_DISPLAYMANAGERVER);
 	  	                      	return retval;
                      		}
-                             	break;	
+                             	break;
 			}
 			if(!strcmp(ORTB_TAGID, key)) {
 				if(COPY_SUCCESS != json_copy_string(&impression->tagid, val)) {
                 	       		ORTB_ERROR("Failed to copy:%s", ORTB_TAGID);
 	  	                      	return retval;
                      		}
-                             	break;	
+                             	break;
 			}
-			
+
 			if(!strcmp(ORTB_BIDFLOORCUR, key)) {
 				if(COPY_SUCCESS != json_copy_string(&impression->bidfloorcur, val)) {
                 	       		ORTB_ERROR("Failed to copy:%s", ORTB_BIDFLOORCUR);
 	  	                      	return retval;
                      		}
-                             	break;	
+                             	break;
 			}
-			
+
 			if(!strcmp(ORTB_IFRAMEBUSTER, key)) {
 				if(COPY_SUCCESS != json_copy_string_array(&impression->iframebuster,&impression->niframebuster, val)) {
                 	       		ORTB_ERROR("Failed to copy:%s", ORTB_IFRAMEBUSTER);
 	  	                      	return retval;
                      		}
-                             	break;	
+                             	break;
 			}
-					
-		  }while(0);	
-		}	
+
+		  }while(0);
+		}
 	}
 
 	return PARSE_SUCCESS;
@@ -753,7 +1088,7 @@ int parseSite(json_object* site, BidRequest *bidRequest) {
 
 				break;
 			}
-			
+
 			if (!strcmp(ORTB_PUBLISHER, key)) {
 				if(PARSE_SUCCESS != parsePublisher(val,bidRequest->site)) {
 						ORTB_ERROR("Failed to copy:%s", ORTB_PUBLISHER);
@@ -762,12 +1097,12 @@ int parseSite(json_object* site, BidRequest *bidRequest) {
 
 				break;
 			}
-			
+
 
 
 		}while(0);
 	}
-		
+
 	return PARSE_SUCCESS;
 }
 
@@ -792,7 +1127,7 @@ int parseBidRequest(json_object* root, BidRequest *bidRequest) {
 
 				break;
 			}
-		
+
 			if (!strcmp(ORTB_IMP, key)) {
 				retval = parseImpression(val, bidRequest);
 				if (PARSE_SUCCESS != retval) {
@@ -801,7 +1136,16 @@ int parseBidRequest(json_object* root, BidRequest *bidRequest) {
 				}
 				break;
 			}
-	
+
+			if (!strcmp(ORTB_DEVICE, key)) {
+				retval = parseDevice(val, bidRequest);
+				if (PARSE_SUCCESS != retval) {
+					ORTB_ERROR("Failed to parse:%s", ORTB_DEVICE);
+					return retval;
+				}
+				break;
+			}
+
 			if (!strcmp(ORTB_SITE,key)) {
 				retval=parseSite(val, bidRequest);
 				if (PARSE_SUCCESS != retval) {
@@ -819,12 +1163,12 @@ int parseBidRequest(json_object* root, BidRequest *bidRequest) {
 				bidRequest->at = json_object_get_int(val);
 				break;
 			}
-			
+
 			if (!strcmp(ORTB_TMAX, key)) {
 				bidRequest->tmax = json_object_get_int(val);
 				break;
 			}
-			
+
 			if (!strcmp(ORTB_WSEAT, key)) {
 				if(COPY_SUCCESS != json_copy_string_array(&bidRequest->wseat, &bidRequest->nwseat, val)) {
 					ORTB_ERROR("Failed to copy: %s", ORTB_WSEAT);
@@ -832,12 +1176,12 @@ int parseBidRequest(json_object* root, BidRequest *bidRequest) {
 				}
 				break;
 			}
-			
+
 			if (!strcmp(ORTB_ALLIMPS, key)) {
 				bidRequest->allimps = json_object_get_int(val);
 				break;
 			}
-			
+
 			if (!strcmp(ORTB_CUR, key)) {
 				if(COPY_SUCCESS != json_copy_string_array(&bidRequest->cur, &bidRequest->ncur, val)) {
 					ORTB_ERROR("Failed to copy: %s", ORTB_CUR);
@@ -845,7 +1189,7 @@ int parseBidRequest(json_object* root, BidRequest *bidRequest) {
 				}
 				break;
 			}
-			
+
 			if (!strcmp(ORTB_BCAT, key)) {
 				if(COPY_SUCCESS != json_copy_string_array(&bidRequest->bcat, &bidRequest->nbcat, val)) {
 					ORTB_ERROR("Failed to copy: %s", ORTB_BCAT);
@@ -853,7 +1197,7 @@ int parseBidRequest(json_object* root, BidRequest *bidRequest) {
 				}
 				break;
 			}
-			
+
 			if (!strcmp(ORTB_BADV, key)) {
 				if(COPY_SUCCESS != json_copy_string_array(&bidRequest->badv, &bidRequest->nbadv, val)) {
 					ORTB_ERROR("Failed to copy: %s", ORTB_BADV);
@@ -861,7 +1205,7 @@ int parseBidRequest(json_object* root, BidRequest *bidRequest) {
 				}
 				break;
 			}
-			
+
 			ORTB_ERROR("Invalid key in BidRequest: key: %s", key);
 		}while(0);
 	}
@@ -885,7 +1229,7 @@ int parseRequest(const char* src, BidRequest *bidRequest) {
 
 		if (PARSE_SUCCESS != parseBidRequest(root, bidRequest))
 				break;
-	
+
 		retval = PARSE_SUCCESS;
 		ORTB_LOG("parsing bid request object completed.");
 	}while(0);
@@ -899,10 +1243,10 @@ int parseRequest(const char* src, BidRequest *bidRequest) {
 int createORTBBidResponse(char *buff, BidResponse *resp) {
 	/*Creating a json object*/
 	json_object *jresp = json_object_new_object();
-	
+
 	// start-seat create seatbid array
 	json_object *jseatbids = json_object_new_array();
-	
+
 	// start-bid create bid array
 	json_object *jbids = json_object_new_array();
 
@@ -934,10 +1278,10 @@ int createORTBBidResponse(char *buff, BidResponse *resp) {
 
 	json_object *jbid = json_object_new_string(resp->id);
 	json_object_object_add (jresp, ORTB_RESP_ID, jbid);
-	
+
 	json_object *jbcur = json_object_new_string(resp->cur);
 	json_object_object_add (jresp, ORTB_RESP_CUR, jbcur);
-	
+
 	json_object_object_add (jresp, ORTB_RESP_SEAT_BID, jseatbids);
 
 	/*Now printing the json object*/
@@ -946,7 +1290,7 @@ int createORTBBidResponse(char *buff, BidResponse *resp) {
 	strcpy(buff, tempbuff);
 
 	json_object_put(jresp);
-	
+
 	return 0;
 }
 

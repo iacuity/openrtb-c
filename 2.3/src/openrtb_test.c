@@ -17,6 +17,26 @@
 			\"publisher\": { \"id\": \"8953\" \
 			} \
 		}, \
+	\"device\": { \
+	\"dnt\": 0, \
+	\"ua\": \"Mozilla/5.0 (iPhone; CPU iPhone OS 6_1 like Mac OS X) \
+		AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9A334 Safari/7534.48.3\", \
+	\"ip\": \"123.145.167.189\", \
+	\"ifa\": \"AA000DFE74168477C70D291f574D344790E0BB11\", \
+	\"carrier\": \"VERIZON\", \
+	\"language\": \"en\", \
+	\"make\": \"Apple\", \"model\": \"iPhone\", \
+	\"os\": \"iOS\", \"osv\": \"6.1\", \
+	\"js\": 1, \
+	\"connectiontype\": 3, \
+	\"devicetype\": 1, \
+	\"geo\": { \
+	\"lat\": 35.012345, \"lon\": -115.12345, \
+	\"country\": \"USA\", \
+	\"metro\": \"803\", \
+	\"region\": \"CA\", \"city\": \"Los Angeles\", \"zip\": \"90049\" \
+	} \
+	}, \
 	\"at\": 1, \
 	\"tmax\": 120, \
 	\"wseat\": [\"seat-1\", \"seat-2\"], \
@@ -61,7 +81,19 @@ int validateBidRequest(BidRequest *bidRequest) {
 	// Validate Site and Publisher
 	assert(!strcmp("102855",  bidRequest->site->id));
 	assert(!strcmp("8953",  bidRequest->site->publisher->id));
-
+	//Validate Device Object
+	assert(!strcmp("123.145.167.189",  bidRequest->device->ip));
+	assert(!strcmp("AA000DFE74168477C70D291f574D344790E0BB11",  bidRequest->device->ifa));
+	assert(!strcmp("VERIZON",  bidRequest->device->carrier));
+	assert(!strcmp("en",  bidRequest->device->language));
+	assert(!strcmp("Apple",  bidRequest->device->make));
+	assert(!strcmp("iPhone",  bidRequest->device->model));
+	assert(!strcmp("iOS",  bidRequest->device->os));
+	assert(!strcmp("6.1",  bidRequest->device->osv));
+	assert(1 == bidRequest->device->devicetype);
+	assert(1 == bidRequest->device->js);
+	assert(3 == bidRequest->device->connectiontype);
+	assert(0 == bidRequest->device->dnt);
 	return 0;
 }
 
